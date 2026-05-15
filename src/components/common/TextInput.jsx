@@ -1,0 +1,8 @@
+export function TextInput({ className = "", ...props }) {
+  return (
+    <input
+      className={`h-12 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100 ${className}`}
+      {...props}
+    />
+  );
+}

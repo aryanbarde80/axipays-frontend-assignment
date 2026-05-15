@@ -1,62 +1,111 @@
-# ERPNext Single-Container Deployment
+# Axipays Payment Console
 
-This repository packages ERPNext on the Frappe Framework into a single Docker container that is suitable for platforms such as Render where `docker-compose` is not available.
+A production-style frontend payment system built for the Axipays frontend assignment. The app includes a secure checkout flow, redirect-aware payment result handling, and a transaction dashboard that turns backend payment records into operational metrics.
 
-## Included Services
+## What this project covers
 
-- ERPNext and Frappe Bench from the official `frappe/erpnext` base image
-- MariaDB running inside the same container
-- Redis running inside the same container
-- Supervisor managing all long-running processes
+- Secure checkout page with card and billing capture
+- Luhn validation before submission
+- HMAC-SHA256 request signing with the exact Axipays message rules
+- Sensitive field masking for card number and CVV
+- Redirect-first payment flow with iframe support as a bonus path
+- Dashboard summary cards, charts, and paginated transaction history
+- Human-readable documentation for architecture, security, and API flow
 
-## Repository Files
+## Stack
 
-- `Dockerfile`
-- `entrypoint.sh`
-- `supervisord.conf`
-- `render.yaml`
-- `README.md`
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- Axios
+- Recharts
+- Framer Motion
+- React Hot Toast
+- React Icons
+- Crypto JS
+- Vitest + Testing Library
 
-## Behavior
-
-- Initializes `frappe-bench` automatically if it is missing
-- Creates `site1.local` automatically on first boot
-- Sets the Administrator password to `admin`
-- Installs the ERPNext app automatically
-- Starts MariaDB, Redis, and the Frappe Bench process stack in one container
-- Exposes the app on `http://localhost:8000`
-
-## Deploy
-
-### Docker
-
-```bash
-docker build -t erpnext-single .
-docker run -p 8000:8000 erpnext-single
-```
-
-### Render
-
-The repo includes `render.yaml` for a Docker web service deployment with a persistent disk mounted at:
+## Project structure
 
 ```text
-/home/frappe/frappe-bench/sites
+src/
+  app/
+  pages/
+  components/
+  services/
+  security/
+  hooks/
+  utils/
+  config/
+  styles/
 ```
 
-## Demo Login
+The key rule throughout the project is separation of concerns:
 
-Use the following demo credentials after the site is ready:
+- UI components stay presentational
+- API calls live only in `services/`
+- Payment-sensitive logic lives in `security/`
+- Hooks coordinate state and flow
 
-- Email: `aryanbarde80@gmail.com`
-- Password: `aryan@123`
+## Local setup
 
-## Default System Credentials
+```bash
+npm install
+npm run dev
+```
 
-- Site name: `site1.local`
-- Admin user: `Administrator`
-- Admin password: `admin`
+To create a production build:
 
-## Notes
+```bash
+npm run build
+```
 
-- This setup is intended for demo, testing, and simplified single-container hosting.
-- Persistent site data is stored under the `sites` directory so it can survive container restarts when a disk is attached.
+To run the tests:
+
+```bash
+npm run test:run
+```
+
+## Environment
+
+Optional environment variables:
+
+```bash
+VITE_API_BASE_URL=https://payment-assignment.onrender.com
+VITE_APP_BASE_URL=https://your-deployed-app-url
+```
+
+If these are not provided, the app falls back to the Axipays assignment API and the current browser origin.
+
+## Payment flow overview
+
+1. The customer enters card and billing details on the checkout page.
+2. The form validates required fields and runs a Luhn check against the card number.
+3. The request signing utility builds the `Hash` header using the Axipays HMAC rules.
+4. The frontend calls the initiate payment endpoint.
+5. If a redirect URL is returned, the app either redirects the browser or renders the bonus iframe preview path.
+6. The result page reads query parameters or embedded window messages and falls back to a safe pending state if the callback is incomplete.
+7. The dashboard provides summary metrics and transaction history from the transactions endpoint.
+
+## Notes on security handling
+
+- Raw card details are never logged
+- CVV is cleared from state after submission
+- Card numbers are masked anywhere outside direct input
+- The app avoids claiming success unless callback data clearly indicates it
+
+## Deployment
+
+- `vercel.json` is included for SPA-friendly Vercel deployment
+- `render.yaml` is included for static site deployment on Render
+
+## Documentation
+
+- [ARCHITECTURE.md](./ARCHITECTURE.md)
+- [SECURITY.md](./SECURITY.md)
+- [API_FLOW.md](./API_FLOW.md)
+
+## Final thought
+
+This submission was designed to feel like a small fintech product surface rather than a one-off assignment. The priority was correctness, flow clarity, and security-minded implementation without over-engineering the frontend.
