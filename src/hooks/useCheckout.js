@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { paymentModes } from "../config/constants";
 import { isValidCardNumber, sanitizeCardNumber } from "../security/luhnValidator";
 import { initiatePayment } from "../services/payment.service";
@@ -63,6 +64,7 @@ function buildValidationErrors(formValues) {
 }
 
 export function useCheckout() {
+  const navigate = useNavigate();
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -138,7 +140,10 @@ export function useCheckout() {
         return;
       }
 
-      window.location.assign(paymentResponse.redirectionUrl);
+      window.open(paymentResponse.redirectionUrl, "_blank", "noopener,noreferrer");
+      navigate(
+        `/payment/result?redirect_url=${encodeURIComponent(paymentResponse.redirectionUrl)}`
+      );
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message ||

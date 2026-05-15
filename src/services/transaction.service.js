@@ -54,10 +54,18 @@ export function normalizeTransaction(transaction = {}, index = 0) {
     orderId: String(orderId),
     email: transaction.email || transaction.cardholder_email || "Unknown",
     expiryMonth: String(
-      transaction.expiry_month || transaction.expMonth || transaction.month || ""
+      transaction.expiryMonth ||
+        transaction.expiry_month ||
+        transaction.expMonth ||
+        transaction.month ||
+        ""
     ).padStart(2, "0"),
     expiryYear: String(
-      transaction.expiry_year || transaction.expYear || transaction.year || ""
+      transaction.expiryYear ||
+        transaction.expiry_year ||
+        transaction.expYear ||
+        transaction.year ||
+        ""
     ),
     amount: Number(transaction.amount || 0),
     currency: transaction.currency || "USD",

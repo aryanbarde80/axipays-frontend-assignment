@@ -39,7 +39,8 @@ describe("payment.service", () => {
       "/initiate-payment",
       expect.objectContaining({
         email: "aryan@example.com",
-        card_number: "4242424242424242"
+        cardNumber: "4242424242424242",
+        orderId: expect.stringMatching(/^ORD-/)
       }),
       expect.objectContaining({
         headers: expect.objectContaining({
