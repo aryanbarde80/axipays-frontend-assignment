@@ -22,6 +22,13 @@ export function formatMaskedCardNumber(cardNumber = "") {
   return maskCardNumber(cardNumber).replace(/(.{4})/g, "$1 ").trim();
 }
 
+export function formatCardNumberForInput(cardNumber = "") {
+  return sanitizeCardNumber(cardNumber)
+    .slice(0, 19)
+    .replace(/(.{4})/g, "$1 ")
+    .trim();
+}
+
 export function maskCardNumberForTable(cardNumber = "") {
   const masked = maskCardNumber(cardNumber);
   return masked

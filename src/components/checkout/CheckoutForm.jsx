@@ -1,5 +1,8 @@
 import { paymentModes, supportedCountries, supportedCurrencies } from "../../config/constants";
-import { formatMaskedCardNumber } from "../../security/cardMasking";
+import {
+  formatCardNumberForInput,
+  formatMaskedCardNumber
+} from "../../security/cardMasking";
 import { Button } from "../common/Button";
 import { FormField } from "../common/FormField";
 import { SectionCard } from "../common/SectionCard";
@@ -14,14 +17,19 @@ function buildYearOptions() {
 export function CheckoutForm({
   formValues,
   formErrors,
+  isCardInputFocused,
   paymentMode,
   onPaymentModeChange,
   onChange,
+  onCardFocusChange,
   onSubmit,
   isSubmitting,
   iframeUrl
 }) {
   const previewMaskedCard = formatMaskedCardNumber(formValues.cardNumber);
+  const cardInputValue = isCardInputFocused
+    ? formatCardNumberForInput(formValues.cardNumber)
+    : previewMaskedCard;
 
   return (
     <SectionCard className="space-y-8">
@@ -86,10 +94,12 @@ export function CheckoutForm({
             id="cardNumber"
             inputMode="numeric"
             autoComplete="cc-number"
-            maxLength={19}
+            maxLength={23}
             placeholder="4242 4242 4242 4242"
-            value={formValues.cardNumber}
+            value={cardInputValue}
             onChange={(event) => onChange("cardNumber", event.target.value)}
+            onFocus={() => onCardFocusChange(true)}
+            onBlur={() => onCardFocusChange(false)}
           />
         </FormField>
 
@@ -137,6 +147,7 @@ export function CheckoutForm({
           <FormField label="CVV / CVC" htmlFor="cvv" error={formErrors.cvv}>
             <TextInput
               id="cvv"
+              type="password"
               inputMode="numeric"
               autoComplete="cc-csc"
               maxLength={4}

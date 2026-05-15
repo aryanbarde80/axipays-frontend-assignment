@@ -30,7 +30,9 @@ describe("transactionMetrics", () => {
   it("builds summary metrics", () => {
     expect(buildDashboardMetrics(transactions)).toEqual({
       totalTransactions: 3,
-      totalSuccessVolume: 120,
+      totalSuccessVolume: {
+        USD: 120
+      },
       totalSuccessCount: 1,
       totalFailedCount: 2
     });

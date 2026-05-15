@@ -4,12 +4,15 @@ import { AppFrame } from "../../components/common/AppFrame";
 import { Button } from "../../components/common/Button";
 import { SectionCard } from "../../components/common/SectionCard";
 import { StatusBadge } from "../../components/common/StatusBadge";
+import { StatusModal } from "../../components/common/StatusModal";
 import { usePaymentRedirect } from "../../hooks/usePaymentRedirect";
 import { formatCurrency } from "../../utils/currencyFormat";
+import { useState } from "react";
 
 export function PaymentResultPage() {
   const location = useLocation();
   const paymentResult = usePaymentRedirect(location.search);
+  const [isResultModalVisible, setIsResultModalVisible] = useState(true);
 
   return (
     <AppFrame
@@ -95,6 +98,11 @@ export function PaymentResultPage() {
           </ul>
         </SectionCard>
       </motion.div>
+
+      <StatusModal
+        modal={isResultModalVisible ? paymentResult.modalContent : null}
+        onClose={() => setIsResultModalVisible(false)}
+      />
     </AppFrame>
   );
 }

@@ -40,17 +40,28 @@ export function usePaymentRedirect(search = "") {
 
   const queryResult = readQueryParams(search);
   const status = normalizeResultStatus(iframeStatus?.status || queryResult.status);
-
-  return {
+  const modalContent = {
     status,
-    orderId: queryResult.orderId || storedAttempt?.orderId || "Processing",
-    reference: queryResult.reference || "Awaiting gateway confirmation",
+    title:
+      status === "success"
+        ? "Payment completed"
+        : status === "failed"
+          ? "Payment failed"
+          : "Payment is still pending",
     message:
       iframeStatus?.message ||
       queryResult.message ||
       (status === "pending"
         ? "We could not verify the final callback yet. Use the dashboard to track the payment as it settles."
-        : "Payment lifecycle update received from the redirect flow."),
+        : "Payment lifecycle update received from the redirect flow.")
+  };
+
+  return {
+    status,
+    orderId: queryResult.orderId || storedAttempt?.orderId || "Processing",
+    reference: queryResult.reference || "Awaiting gateway confirmation",
+    message: modalContent.message,
+    modalContent,
     paymentAttempt: storedAttempt
   };
 }

@@ -6,7 +6,8 @@ export function buildDashboardMetrics(transactions = []) {
       summary.totalTransactions += 1;
 
       if (transaction.status === "success") {
-        summary.totalSuccessVolume += transaction.amount;
+        summary.totalSuccessVolume[transaction.currency] =
+          (summary.totalSuccessVolume[transaction.currency] || 0) + transaction.amount;
         summary.totalSuccessCount += 1;
       }
 
@@ -18,7 +19,7 @@ export function buildDashboardMetrics(transactions = []) {
     },
     {
       totalTransactions: 0,
-      totalSuccessVolume: 0,
+      totalSuccessVolume: {},
       totalSuccessCount: 0,
       totalFailedCount: 0
     }

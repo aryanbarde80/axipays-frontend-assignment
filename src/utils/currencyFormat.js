@@ -9,3 +9,15 @@ export function formatCurrency(amount = 0, currency = "USD") {
     return `${currency} ${Number(amount || 0).toFixed(2)}`;
   }
 }
+
+export function formatCurrencyLedger(currencyTotals = {}) {
+  const entries = Object.entries(currencyTotals);
+
+  if (entries.length === 0) {
+    return formatCurrency(0, "USD");
+  }
+
+  return entries
+    .map(([currency, amount]) => formatCurrency(amount, currency))
+    .join(" · ");
+}

@@ -69,6 +69,7 @@ export function useCheckout() {
   const [paymentMode, setPaymentMode] = useState(paymentModes[0].value);
   const [resultModal, setResultModal] = useState(null);
   const [iframeUrl, setIframeUrl] = useState("");
+  const [isCardInputFocused, setIsCardInputFocused] = useState(false);
 
   const paymentPreview = useMemo(
     () => ({
@@ -162,10 +163,12 @@ export function useCheckout() {
     formValues,
     formErrors,
     isSubmitting,
+    isCardInputFocused,
     paymentMode,
     paymentPreview,
     iframeUrl,
     resultModal,
+    setIsCardInputFocused,
     setResultModal,
     setPaymentMode,
     updateField,

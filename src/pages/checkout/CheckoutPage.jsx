@@ -17,9 +17,11 @@ export function CheckoutPage() {
       <CheckoutForm
         formValues={checkout.formValues}
         formErrors={checkout.formErrors}
+        isCardInputFocused={checkout.isCardInputFocused}
         paymentMode={checkout.paymentMode}
         onPaymentModeChange={checkout.setPaymentMode}
         onChange={checkout.updateField}
+        onCardFocusChange={checkout.setIsCardInputFocused}
         onSubmit={checkout.submitPayment}
         isSubmitting={checkout.isSubmitting}
         iframeUrl={checkout.iframeUrl}
