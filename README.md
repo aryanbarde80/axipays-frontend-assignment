@@ -102,9 +102,10 @@ If these are not provided, the app falls back to the Axipays assignment API and 
 
 ## Documentation
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md)
-- [SECURITY.md](./SECURITY.md)
-- [API_FLOW.md](./API_FLOW.md)
+- [Architecture Notes](./docs/ARCHITECTURE.md)
+- [Security Notes](./docs/SECURITY.md)
+- [API Flow](./docs/API_FLOW.md)
+- [Assignment PDF](./docs/AXIPAYS%20Assignment.pdf)
 
 ## Final thought
 
