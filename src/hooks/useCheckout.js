@@ -1,7 +1,5 @@
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { paymentModes } from "../config/constants";
 import { isValidCardNumber, sanitizeCardNumber } from "../security/luhnValidator";
 import { initiatePayment } from "../services/payment.service";
 
@@ -64,23 +62,19 @@ function buildValidationErrors(formValues) {
 }
 
 export function useCheckout() {
-  const navigate = useNavigate();
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [paymentMode, setPaymentMode] = useState(paymentModes[0].value);
   const [resultModal, setResultModal] = useState(null);
-  const [iframeUrl, setIframeUrl] = useState("");
   const [isCardInputFocused, setIsCardInputFocused] = useState(false);
 
   const paymentPreview = useMemo(
     () => ({
       amount: Number(formValues.amount || 0),
       currency: formValues.currency,
-      email: formValues.email,
-      paymentMode
+      email: formValues.email
     }),
-    [formValues.amount, formValues.currency, formValues.email, paymentMode]
+    [formValues.amount, formValues.currency, formValues.email]
   );
 
   function updateField(fieldName, fieldValue) {
@@ -129,20 +123,7 @@ export function useCheckout() {
         return;
       }
 
-      if (paymentMode === "iframe") {
-        setIframeUrl(paymentResponse.redirectionUrl);
-        setResultModal({
-          status: "pending",
-          title: "Embedded payment view ready",
-          message:
-            "Use the embedded payment window to preview the redirect experience while keeping the app context visible."
-        });
-        return;
-      }
-
-      navigate(
-        `/payment/result?redirect_url=${encodeURIComponent(paymentResponse.redirectionUrl)}`
-      );
+      window.location.assign(paymentResponse.redirectionUrl);
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message ||
@@ -168,13 +149,10 @@ export function useCheckout() {
     formErrors,
     isSubmitting,
     isCardInputFocused,
-    paymentMode,
     paymentPreview,
-    iframeUrl,
     resultModal,
     setIsCardInputFocused,
     setResultModal,
-    setPaymentMode,
     updateField,
     submitPayment
   };

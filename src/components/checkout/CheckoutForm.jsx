@@ -14,22 +14,25 @@ function buildYearOptions() {
   return Array.from({ length: 12 }, (_, index) => String(baseYear + index));
 }
 
+const monthOptions = Array.from({ length: 12 }, (_, index) => {
+  const month = String(index + 1).padStart(2, "0");
+  return { value: month, label: month };
+});
+
 export function CheckoutForm({
   formValues,
   formErrors,
   isCardInputFocused,
-  paymentMode,
-  onPaymentModeChange,
   onChange,
   onCardFocusChange,
   onSubmit,
-  isSubmitting,
-  iframeUrl
+  isSubmitting
 }) {
   const previewMaskedCard = formatMaskedCardNumber(formValues.cardNumber);
   const cardInputValue = isCardInputFocused
     ? formatCardNumberForInput(formValues.cardNumber)
     : previewMaskedCard;
+  const browserRedirectMode = paymentModes[0];
 
   return (
     <SectionCard className="space-y-8">
@@ -37,24 +40,11 @@ export function CheckoutForm({
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
           Secure checkout
         </p>
-        <div className="flex flex-wrap items-center gap-3">
-          {paymentModes.map((mode) => (
-            <button
-              key={mode.value}
-              type="button"
-              onClick={() => onPaymentModeChange(mode.value)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                paymentMode === mode.value
-                  ? "bg-ink text-white"
-                  : "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-ink"
-              }`}
-            >
-              {mode.label}
-            </button>
-          ))}
-        </div>
+        <span className="inline-flex w-fit max-w-full rounded-full bg-ink px-4 py-2 text-sm font-medium text-white">
+          {browserRedirectMode.label}
+        </span>
         <p className="text-sm text-slate-500">
-          {paymentModes.find((mode) => mode.value === paymentMode)?.description}
+          {browserRedirectMode.description}
         </p>
       </div>
 
@@ -113,16 +103,9 @@ export function CheckoutForm({
               id="expiryMonth"
               value={formValues.expiryMonth}
               onChange={(event) => onChange("expiryMonth", event.target.value)}
-            >
-              <option value="">Month</option>
-              {Array.from({ length: 12 }, (_, index) => String(index + 1).padStart(2, "0")).map(
-                (month) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                )
-              )}
-            </SelectInput>
+              options={monthOptions}
+              placeholder="Month"
+            />
           </FormField>
 
           <FormField
@@ -134,14 +117,9 @@ export function CheckoutForm({
               id="expiryYear"
               value={formValues.expiryYear}
               onChange={(event) => onChange("expiryYear", event.target.value)}
-            >
-              <option value="">Year</option>
-              {buildYearOptions().map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </SelectInput>
+              options={buildYearOptions().map((year) => ({ value: year, label: year }))}
+              placeholder="Year"
+            />
           </FormField>
 
           <FormField label="CVV / CVC" htmlFor="cvv" error={formErrors.cvv}>
@@ -176,13 +154,9 @@ export function CheckoutForm({
               id="currency"
               value={formValues.currency}
               onChange={(event) => onChange("currency", event.target.value)}
-            >
-              {supportedCurrencies.map((currency) => (
-                <option key={currency.value} value={currency.value}>
-                  {currency.label}
-                </option>
-              ))}
-            </SelectInput>
+              options={supportedCurrencies}
+              placeholder="Currency"
+            />
           </FormField>
 
           <FormField label="Country" htmlFor="country">
@@ -190,13 +164,9 @@ export function CheckoutForm({
               id="country"
               value={formValues.country}
               onChange={(event) => onChange("country", event.target.value)}
-            >
-              {supportedCountries.map((country) => (
-                <option key={country.value} value={country.value}>
-                  {country.label}
-                </option>
-              ))}
-            </SelectInput>
+              options={supportedCountries}
+              placeholder="Country"
+            />
           </FormField>
         </div>
 
@@ -234,19 +204,6 @@ export function CheckoutForm({
         </Button>
       </form>
 
-      {iframeUrl ? (
-        <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-slate-950">
-          <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 text-sm text-white/70">
-            <span>Embedded payment preview</span>
-            <span>Use only for the bonus path</span>
-          </div>
-          <iframe
-            title="Axipays payment redirect preview"
-            src={iframeUrl}
-            className="h-[540px] w-full bg-white"
-          />
-        </div>
-      ) : null}
     </SectionCard>
   );
 }

@@ -19,11 +19,6 @@ export const paymentModes = [
     value: "browser",
     label: "Browser redirect",
     description: "Primary flow. Redirect the customer into the payment journey."
-  },
-  {
-    value: "iframe",
-    label: "Embedded preview",
-    description: "Bonus flow. Keep the redirect target visible inside a secure frame preview."
   }
 ];
 

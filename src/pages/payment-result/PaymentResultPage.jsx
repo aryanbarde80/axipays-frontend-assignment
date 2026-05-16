@@ -78,12 +78,12 @@ export function PaymentResultPage() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Link to="/dashboard">
+            <Link to="/dashboard" className="w-full sm:w-auto">
               <Button type="button" className="w-full sm:w-auto">
                 Open dashboard
               </Button>
             </Link>
-            <Link to="/">
+            <Link to="/" className="w-full sm:w-auto">
               <Button type="button" variant="secondary" className="w-full sm:w-auto">
                 Start another payment
               </Button>

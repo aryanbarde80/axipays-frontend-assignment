@@ -35,6 +35,41 @@ function pickTransactionCollection(responseData) {
   return [];
 }
 
+function buildContactDetails(transaction = {}) {
+  const email =
+    transaction.email ||
+    transaction.cardholder_email ||
+    transaction.customer_email ||
+    transaction.customerEmail ||
+    "";
+  const cardholderName =
+    transaction.cardHolderName ||
+    transaction.cardholderName ||
+    transaction.card_holder_name ||
+    transaction.customer_name ||
+    transaction.customerName ||
+    "";
+
+  if (email) {
+    return {
+      primary: email,
+      secondary: cardholderName && cardholderName !== email ? cardholderName : "Email"
+    };
+  }
+
+  if (cardholderName) {
+    return {
+      primary: cardholderName,
+      secondary: "Card holder"
+    };
+  }
+
+  return {
+    primary: "Not provided by API",
+    secondary: "Contact unavailable"
+  };
+}
+
 export function normalizeTransaction(transaction = {}, index = 0) {
   const orderId =
     transaction.order_id ||
@@ -48,11 +83,13 @@ export function normalizeTransaction(transaction = {}, index = 0) {
     transaction.cardNumber ||
     transaction.pan ||
     "";
+  const contact = buildContactDetails(transaction);
 
   return {
     id: String(orderId),
     orderId: String(orderId),
-    email: transaction.email || transaction.cardholder_email || "Unknown",
+    email: contact.primary,
+    contactHint: contact.secondary,
     expiryMonth: String(
       transaction.expiryMonth ||
         transaction.expiry_month ||

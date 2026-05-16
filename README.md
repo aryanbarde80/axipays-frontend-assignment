@@ -8,7 +8,7 @@ A production-style frontend payment system built for the Axipays frontend assign
 - Luhn validation before submission
 - HMAC-SHA256 request signing with the exact Axipays message rules
 - Sensitive field masking for card number and CVV
-- Redirect-first payment flow with iframe support as a bonus path
+- Browser redirect payment flow with callback-aware result handling
 - Dashboard summary cards, charts, and paginated transaction history
 - Human-readable documentation for architecture, security, and API flow
 
@@ -84,7 +84,7 @@ If these are not provided, the app falls back to the Axipays assignment API and 
 2. The form validates required fields and runs a Luhn check against the card number.
 3. The request signing utility builds the `Hash` header using the Axipays HMAC rules.
 4. The frontend calls the initiate payment endpoint.
-5. If a redirect URL is returned, the app either redirects the browser or renders the bonus iframe preview path.
+5. If a redirect URL is returned, the app redirects the browser to the gateway flow.
 6. The result page reads query parameters or embedded window messages and falls back to a safe pending state if the callback is incomplete.
 7. The dashboard provides summary metrics and transaction history from the transactions endpoint.
 

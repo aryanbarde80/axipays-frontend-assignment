@@ -71,6 +71,8 @@ export function DashboardPage() {
               label="Total transactions"
               value={metrics.totalTransactions}
               hint="All fetched transactions in the current dashboard session."
+              accent="overview"
+              footer="Live payment activity rolled into one operations snapshot."
             />
             <SummaryCard
               label="Total success volume"
@@ -81,11 +83,13 @@ export function DashboardPage() {
               label="Total success count"
               value={metrics.totalSuccessCount}
               hint="Transactions that settled with a successful final state."
+              accent="settled"
             />
             <SummaryCard
               label="Failed + pending"
               value={metrics.totalFailedCount}
               hint="Assignment-aligned risk bucket for failed and unresolved activity."
+              accent="watchlist"
             />
           </>
         )}

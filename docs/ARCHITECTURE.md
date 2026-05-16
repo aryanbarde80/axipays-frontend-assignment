@@ -23,7 +23,7 @@ This keeps the checkout form from becoming a place where UI, hashing, validation
 The checkout page combines:
 
 - `useCheckout` for form orchestration and submission flow
-- `CheckoutForm` for all visible fields and payment mode controls
+- `CheckoutForm` for all visible fields and submission controls
 - `CheckoutSummary` for the trust-oriented side panel
 - `StatusModal` for payment request feedback
 
@@ -58,7 +58,7 @@ If the callback is incomplete, the page intentionally degrades into a pending st
 2. Validation runs in the hook using the Luhn validator
 3. `payment.service.js` builds the payload and the `Hash` header
 4. `apiClient.js` sends the request
-5. The redirect URL is handled either by browser navigation or iframe preview
+5. The redirect URL is handled by browser navigation
 
 ### Dashboard flow
 

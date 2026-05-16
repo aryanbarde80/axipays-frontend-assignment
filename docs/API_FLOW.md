@@ -49,12 +49,7 @@ Headers:
 
 ### 4. Redirect handling
 
-If the API returns a `redirection_url`, the app supports two flows:
-
-- browser redirect as the main path
-- embedded iframe preview as the bonus path
-
-For the browser-first path, the app stores a small non-sensitive payment snapshot locally before navigating away. That gives the result page enough context to render a useful fallback if the callback is incomplete.
+If the API returns a `redirection_url`, the app stores a small non-sensitive payment snapshot locally and then performs a browser redirect into the gateway flow. That gives the result page enough context to render a useful fallback if the callback is incomplete after the gateway sends the user back.
 
 ### 5. Result interpretation
 

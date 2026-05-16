@@ -8,8 +8,15 @@
   color-scheme: light;
 }
 
+html,
+body,
+#root {
+  min-width: 320px;
+}
+
 body {
   @apply bg-slate-50 font-sans text-ink antialiased;
+  overflow-x: hidden;
 }
 
 * {

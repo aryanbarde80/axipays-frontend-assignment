@@ -4,80 +4,122 @@ import { Skeleton } from "../common/Skeleton";
 import { StatusBadge } from "../common/StatusBadge";
 import { formatCurrency } from "../../utils/currencyFormat";
 
-// Columns with responsive visibility and flexible widths
 const tableColumns = [
-  { key: "orderId", label: "Order ID", mobile: true, tablet: true, desktop: true, width: "auto" },
-  { key: "maskedCardNumber", label: "Card Number", mobile: true, tablet: true, desktop: true, width: "auto" },
-  { key: "email", label: "Email", mobile: false, tablet: false, desktop: true, width: "auto" },
-  { key: "expiry", label: "Expiry", mobile: false, tablet: true, desktop: true, width: "auto" },
-  { key: "amount", label: "Amount", mobile: true, tablet: true, desktop: true, width: "auto" },
-  { key: "currency", label: "Currency", mobile: false, tablet: true, desktop: true, width: "auto" },
-  { key: "status", label: "Status", mobile: true, tablet: true, desktop: true, width: "auto" }
+  { key: "orderId", label: "Order ID", headerClassName: "", cellClassName: "" },
+  {
+    key: "maskedCardNumber",
+    label: "Card Number",
+    headerClassName: "",
+    cellClassName: ""
+  },
+  {
+    key: "email",
+    label: "Contact",
+    headerClassName: "hidden lg:table-cell",
+    cellClassName: "hidden lg:table-cell"
+  },
+  {
+    key: "expiry",
+    label: "Expiry",
+    headerClassName: "hidden md:table-cell",
+    cellClassName: "hidden md:table-cell"
+  },
+  {
+    key: "maskedCvv",
+    label: "Card CVC",
+    headerClassName: "hidden xl:table-cell",
+    cellClassName: "hidden xl:table-cell"
+  },
+  {
+    key: "amount",
+    label: "Amount",
+    headerClassName: "",
+    cellClassName: ""
+  },
+  {
+    key: "currency",
+    label: "Currency",
+    headerClassName: "hidden md:table-cell",
+    cellClassName: "hidden md:table-cell"
+  },
+  {
+    key: "status",
+    label: "Status",
+    headerClassName: "",
+    cellClassName: ""
+  }
 ];
 
-function TableSkeletonRow() {
+function TableSkeletonRow({ rowIndex }) {
   return (
     <tr className="text-sm text-slate-600">
-      <td className="px-3 py-3 sm:px-4">
+      <td className="px-6 py-5">
         <Skeleton className="h-4 w-24" />
       </td>
-      <td className="px-3 py-3 sm:px-4">
+      <td className="px-6 py-5">
         <Skeleton className="h-4 w-32" />
       </td>
-      <td className="hidden px-3 py-3 sm:px-4 lg:table-cell">
-        <Skeleton className="h-4 w-36" />
+      <td className="hidden px-6 py-5 lg:table-cell">
+        <Skeleton className="h-4 w-40" />
       </td>
-      <td className="hidden px-3 py-3 sm:px-4 md:table-cell">
-        <Skeleton className="h-4 w-16" />
-      </td>
-      <td className="px-3 py-3 sm:px-4">
+      <td className="hidden px-6 py-5 md:table-cell">
         <Skeleton className="h-4 w-20" />
       </td>
-      <td className="hidden px-3 py-3 sm:px-4 md:table-cell">
+      <td className="hidden px-6 py-5 xl:table-cell">
         <Skeleton className="h-4 w-12" />
       </td>
-      <td className="px-3 py-3 sm:px-4">
-        <Skeleton className="h-6 w-16 rounded-full" />
+      <td className="px-6 py-5">
+        <Skeleton className="h-4 w-24" />
+      </td>
+      <td className="hidden px-6 py-5 md:table-cell">
+        <Skeleton className="h-4 w-12" />
+      </td>
+      <td className="px-6 py-5">
+        <Skeleton className={`h-7 w-20 rounded-full ${rowIndex % 2 === 0 ? "" : "opacity-80"}`} />
       </td>
     </tr>
   );
 }
 
-// Generate dummy email for invalid emails
-function getDummyEmail(orderId) {
-  const domains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com"];
-  const names = ["user", "customer", "client", "buyer"];
-  const randomName = names[Math.floor(Math.random() * names.length)];
-  const randomNum = Math.floor(Math.random() * 999);
-  return `${randomName}${randomNum}@${domains[Math.floor(Math.random() * domains.length)]}`;
-}
-
-// Mobile card view for small screens
 function MobileTransactionCard({ transaction }) {
-  const displayEmail = transaction.email && 
-                       !transaction.email.toLowerCase().includes("unknown") && 
-                       transaction.email !== "N/A" 
-                       ? transaction.email 
-                       : getDummyEmail(transaction.orderId);
-
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <p className="text-xs text-slate-400">Order ID</p>
-          <p className="text-sm font-medium text-slate-900 break-all">{transaction.orderId}</p>
+    <div className="rounded-[20px] border border-slate-100 bg-slate-50/80 p-4">
+      <div className="flex flex-col gap-3 min-[360px]:flex-row min-[360px]:items-start min-[360px]:justify-between">
+        <div className="min-w-0">
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Order ID</p>
+          <p className="mt-2 break-all text-sm font-semibold text-slate-950">
+            {transaction.orderId}
+          </p>
         </div>
-        <StatusBadge status={transaction.status} />
+        <div className="w-fit">
+          <StatusBadge status={transaction.status} />
+        </div>
       </div>
-      <div className="mt-3">
-        <p className="text-xs text-slate-400">Card</p>
-        <p className="text-sm text-slate-700">{transaction.maskedCardNumber}</p>
-      </div>
-      <div className="mt-2">
-        <p className="text-xs text-slate-400">Amount</p>
-        <p className="text-base font-semibold text-slate-900">
-          {formatCurrency(transaction.amount, transaction.currency)}
-        </p>
+
+      <div className="mt-4 space-y-3 text-sm text-slate-600">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Card</p>
+          <p className="mt-1 break-all">{transaction.maskedCardNumber}</p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Email</p>
+          <p className="mt-1 break-all text-slate-900">{transaction.email}</p>
+          <p className="mt-1 text-xs text-slate-400">{transaction.contactHint}</p>
+        </div>
+        <div className="grid gap-3 min-[360px]:grid-cols-2">
+          <div className="min-w-0">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Expiry</p>
+            <p className="mt-1">
+              {transaction.expiryMonth} / {transaction.expiryYear}
+            </p>
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Amount</p>
+            <p className="mt-1 break-words font-semibold text-slate-900">
+              {formatCurrency(transaction.amount, transaction.currency)}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -90,150 +132,108 @@ export function TransactionTable({
   onPageChange,
   isLoading = false
 }) {
-  // Process transactions - fix invalid emails
-  const processedTransactions = transactions.map((transaction) => {
-    const isInvalidEmail = !transaction.email ||
-      transaction.email.toLowerCase().includes("unknown") ||
-      transaction.email === "N/A";
-    
-    return {
-      ...transaction,
-      email: isInvalidEmail ? getDummyEmail(transaction.orderId) : transaction.email
-    };
-  });
-
   return (
     <SectionCard className="overflow-hidden p-0">
-      {/* Header */}
-      <div className="border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="min-w-0 flex-1">
-            <h2 className="text-base font-semibold text-slate-900 sm:text-lg">Transaction history</h2>
-            <p className="text-xs text-slate-500 sm:text-sm">
-              Sanitized payment rows with settlement status visibility.
-            </p>
-          </div>
-          <div className="flex items-center justify-between gap-2 sm:justify-end">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
-              disabled={currentPage === 1}
-              size="sm"
-            >
-              Previous
-            </Button>
-            <span className="whitespace-nowrap text-sm text-slate-500">
-              Page {currentPage} of {totalPages}
-            </span>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              size="sm"
-            >
-              Next
-            </Button>
-          </div>
+      <div className="flex flex-col gap-4 border-b border-slate-100 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-slate-950">Transaction history</h2>
+          <p className="text-sm text-slate-500">
+            Sanitized payment rows with settlement status visibility.
+          </p>
+        </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:justify-end">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
+            disabled={currentPage === 1}
+            className="w-full sm:w-auto"
+          >
+            Previous
+          </Button>
+          <span className="text-center text-sm text-slate-500">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="w-full sm:w-auto"
+          >
+            Next
+          </Button>
         </div>
       </div>
 
-      {/* Mobile View - Cards */}
-      <div className="block md:hidden">
-        <div className="divide-y divide-slate-100">
-          {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="p-4">
-                <Skeleton className="h-32 w-full rounded-lg" />
+      <div className="space-y-4 p-4 sm:p-6 md:hidden">
+        {isLoading
+          ? Array.from({ length: 4 }, (_, index) => (
+              <div
+                key={`mobile-skeleton-${index + 1}`}
+                className="rounded-[20px] border border-slate-100 bg-slate-50/80 p-4"
+              >
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="mt-4 h-4 w-full" />
+                <Skeleton className="mt-3 h-4 w-3/4" />
+                <Skeleton className="mt-4 h-10 w-24 rounded-full" />
               </div>
             ))
-          ) : (
-            processedTransactions.map((transaction) => (
+          : transactions.map((transaction) => (
               <MobileTransactionCard key={transaction.id} transaction={transaction} />
-            ))
-          )}
-        </div>
-        {/* Mobile Pagination */}
-        {!isLoading && processedTransactions.length > 0 && (
-          <div className="border-t border-slate-200 px-4 py-4">
-            <div className="flex items-center justify-between gap-2">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
-                disabled={currentPage === 1}
-                size="sm"
-                className="flex-1"
-              >
-                Previous
-              </Button>
-              <span className="text-sm text-slate-500">
-                Page {currentPage} of {totalPages}
-              </span>
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                size="sm"
-                className="flex-1"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
+            ))}
       </div>
 
-      {/* Desktop Table View - Fully responsive, no scroll */}
-      <div className="hidden md:block w-full overflow-x-auto">
-        <table className="w-full min-w-full table-auto border-collapse">
+      <div className="hidden overflow-x-auto md:block">
+        <table className="w-full min-w-[760px] divide-y divide-slate-100">
           <thead className="bg-slate-50">
-            <tr className="text-left text-xs font-medium uppercase tracking-wider text-slate-500">
-              <th className="px-4 py-3">Order ID</th>
-              <th className="px-4 py-3">Card Number</th>
-              <th className="hidden px-4 py-3 lg:table-cell">Email</th>
-              <th className="hidden px-4 py-3 md:table-cell">Expiry</th>
-              <th className="px-4 py-3">Amount</th>
-              <th className="hidden px-4 py-3 md:table-cell">Currency</th>
-              <th className="px-4 py-3">Status</th>
+            <tr className="text-left text-xs uppercase tracking-[0.22em] text-slate-400">
+              {tableColumns.map((column) => (
+                <th
+                  key={column.key}
+                  className={`px-6 py-4 font-medium ${column.headerClassName}`}
+                >
+                  {column.label}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
-            {isLoading ? (
-              Array.from({ length: 5 }).map((_, i) => <TableSkeletonRow key={i} />)
-            ) : (
-              processedTransactions.map((transaction) => (
-                <tr key={transaction.id} className="text-sm text-slate-600 hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-900">
-                    <div className="max-w-[150px] truncate" title={transaction.orderId}>
+            {isLoading
+              ? Array.from({ length: 5 }, (_, index) => (
+                  <TableSkeletonRow key={`skeleton-row-${index + 1}`} rowIndex={index} />
+                ))
+              : transactions.map((transaction) => (
+                  <tr key={transaction.id} className="text-sm text-slate-600">
+                    <td className="whitespace-nowrap px-6 py-5 font-medium text-slate-950">
                       {transaction.orderId}
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-3">
-                    {transaction.maskedCardNumber}
-                  </td>
-                  <td className="hidden px-4 py-3 lg:table-cell">
-                    <div className="max-w-[200px] truncate" title={transaction.email}>
-                      {transaction.email}
-                    </div>
-                  </td>
-                  <td className="hidden whitespace-nowrap px-4 py-3 md:table-cell">
-                    {transaction.expiryMonth}/{transaction.expiryYear}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-3 font-medium">
-                    {formatCurrency(transaction.amount, transaction.currency)}
-                  </td>
-                  <td className="hidden whitespace-nowrap px-4 py-3 md:table-cell">
-                    {transaction.currency}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-3">
-                    <StatusBadge status={transaction.status} />
-                  </td>
-                </tr>
-              ))
-            )}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-5">
+                      {transaction.maskedCardNumber}
+                    </td>
+                    <td className="hidden px-6 py-5 lg:table-cell">
+                      <div className="min-w-0">
+                        <p className="break-all text-slate-900">{transaction.email}</p>
+                        <p className="mt-1 text-xs text-slate-400">{transaction.contactHint}</p>
+                      </div>
+                    </td>
+                    <td className="hidden whitespace-nowrap px-6 py-5 md:table-cell">
+                      {transaction.expiryMonth} / {transaction.expiryYear}
+                    </td>
+                    <td className="hidden whitespace-nowrap px-6 py-5 xl:table-cell">
+                      {transaction.maskedCvv}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-5">
+                      {formatCurrency(transaction.amount, transaction.currency)}
+                    </td>
+                    <td className="hidden whitespace-nowrap px-6 py-5 md:table-cell">
+                      {transaction.currency}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-5">
+                      <StatusBadge status={transaction.status} />
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>
