@@ -45,37 +45,37 @@ const tableColumns = [
   {
     key: "status",
     label: "Status",
-    headerClassName: "w-[100px] min-w-[100px]",
-    cellClassName: "w-[100px] min-w-[100px]"
+    headerClassName: "",
+    cellClassName: ""
   }
 ];
 
 function TableSkeletonRow({ rowIndex }) {
   return (
     <tr className="text-sm text-slate-600">
-      <td className="px-6 py-5">
-        <Skeleton className="h-4 w-24" />
+      <td className="px-4 py-3 sm:px-6 sm:py-5">
+        <Skeleton className="h-4 w-20 sm:w-24" />
       </td>
-      <td className="px-6 py-5">
-        <Skeleton className="h-4 w-32" />
+      <td className="px-4 py-3 sm:px-6 sm:py-5">
+        <Skeleton className="h-4 w-28 sm:w-32" />
       </td>
-      <td className="hidden px-6 py-5 lg:table-cell">
-        <Skeleton className="h-4 w-40" />
+      <td className="hidden px-4 py-3 sm:px-6 sm:py-5 lg:table-cell">
+        <Skeleton className="h-4 w-32 sm:w-40" />
       </td>
-      <td className="hidden px-6 py-5 md:table-cell">
-        <Skeleton className="h-4 w-20" />
+      <td className="hidden px-4 py-3 sm:px-6 sm:py-5 md:table-cell">
+        <Skeleton className="h-4 w-16 sm:w-20" />
       </td>
-      <td className="hidden px-6 py-5 xl:table-cell">
-        <Skeleton className="h-4 w-12" />
+      <td className="hidden px-4 py-3 sm:px-6 sm:py-5 xl:table-cell">
+        <Skeleton className="h-4 w-10 sm:w-12" />
       </td>
-      <td className="px-6 py-5">
-        <Skeleton className="h-4 w-24" />
+      <td className="px-4 py-3 sm:px-6 sm:py-5">
+        <Skeleton className="h-4 w-20 sm:w-24" />
       </td>
-      <td className="hidden px-6 py-5 md:table-cell">
-        <Skeleton className="h-4 w-12" />
+      <td className="hidden px-4 py-3 sm:px-6 sm:py-5 md:table-cell">
+        <Skeleton className="h-4 w-10 sm:w-12" />
       </td>
-      <td className="px-6 py-5">
-        <Skeleton className={`h-7 w-20 rounded-full ${rowIndex % 2 === 0 ? "" : "opacity-80"}`} />
+      <td className="px-4 py-3 sm:px-6 sm:py-5">
+        <Skeleton className="h-6 w-16 rounded-full sm:h-7 sm:w-20" />
       </td>
     </tr>
   );
@@ -113,23 +113,24 @@ export function TransactionTable({
   return (
     <SectionCard className="overflow-hidden p-0">
       {/* Table Header with Title and Pagination Controls */}
-      <div className="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 border-b border-slate-100 px-4 py-4 sm:px-6 sm:py-5 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-slate-950">Transaction history</h2>
-          <p className="text-sm text-slate-500">
+          <h2 className="text-base font-semibold text-slate-950 sm:text-lg">Transaction history</h2>
+          <p className="text-xs text-slate-500 sm:text-sm">
             Sanitized payment rows with settlement status visibility.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Button
             type="button"
             variant="secondary"
             onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
             disabled={currentPage === 1}
+            className="px-3 py-1.5 text-sm sm:px-4 sm:py-2"
           >
             Previous
           </Button>
-          <span className="text-sm text-slate-500">
+          <span className="text-xs text-slate-500 sm:text-sm">
             Page {currentPage} of {totalPages}
           </span>
           <Button
@@ -137,21 +138,22 @@ export function TransactionTable({
             variant="secondary"
             onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
+            className="px-3 py-1.5 text-sm sm:px-4 sm:py-2"
           >
             Next
           </Button>
         </div>
       </div>
 
-      {/* Transaction Table - Fixed width for status column, no horizontal scroll */}
-      <div className="w-full overflow-x-auto">
-        <table className="min-w-[760px] w-full table-auto divide-y divide-slate-100">
+      {/* Transaction Table - NO HORIZONTAL SCROLL */}
+      <div className="w-full">
+        <table className="w-full table-auto divide-y divide-slate-100">
           <thead className="bg-slate-50">
             <tr className="text-left text-xs uppercase tracking-[0.22em] text-slate-400">
               {tableColumns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-6 py-4 font-medium ${column.headerClassName}`}
+                  className={`px-4 py-3 font-medium sm:px-6 sm:py-4 ${column.headerClassName}`}
                 >
                   {column.label}
                 </th>
@@ -160,35 +162,37 @@ export function TransactionTable({
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
             {isLoading
-              ? // Show skeleton loading state while fetching data
-                Array.from({ length: 5 }, (_, index) => (
+              ? Array.from({ length: 5 }, (_, index) => (
                   <TableSkeletonRow key={`skeleton-row-${index + 1}`} rowIndex={index} />
                 ))
-              : // Render actual transaction data
-                processedTransactions.map((transaction) => (
+              : processedTransactions.map((transaction) => (
                   <tr key={transaction.id} className="text-sm text-slate-600">
-                    <td className="whitespace-nowrap px-6 py-5 font-medium text-slate-950">
-                      {transaction.orderId}
+                    <td className="break-words px-4 py-3 font-medium text-slate-950 sm:px-6 sm:py-5">
+                      <span className="block truncate max-w-[120px] sm:max-w-none sm:whitespace-nowrap">
+                        {transaction.orderId}
+                      </span>
                     </td>
-                    <td className="whitespace-nowrap px-6 py-5">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-5">
                       {transaction.maskedCardNumber}
                     </td>
-                    <td className="hidden px-6 py-5 lg:table-cell">
-                      {transaction.email}
+                    <td className="hidden px-4 py-3 sm:px-6 sm:py-5 lg:table-cell">
+                      <span className="block truncate max-w-[180px]">
+                        {transaction.email}
+                      </span>
                     </td>
-                    <td className="hidden whitespace-nowrap px-6 py-5 md:table-cell">
+                    <td className="hidden whitespace-nowrap px-4 py-3 sm:px-6 sm:py-5 md:table-cell">
                       {transaction.expiryMonth} / {transaction.expiryYear}
                     </td>
-                    <td className="hidden whitespace-nowrap px-6 py-5 xl:table-cell">
+                    <td className="hidden whitespace-nowrap px-4 py-3 sm:px-6 sm:py-5 xl:table-cell">
                       {transaction.maskedCvv}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-5">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-5">
                       {formatCurrency(transaction.amount, transaction.currency)}
                     </td>
-                    <td className="hidden whitespace-nowrap px-6 py-5 md:table-cell">
+                    <td className="hidden whitespace-nowrap px-4 py-3 sm:px-6 sm:py-5 md:table-cell">
                       {transaction.currency}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-5">
+                    <td className="whitespace-nowrap px-4 py-3 sm:px-6 sm:py-5">
                       <StatusBadge status={transaction.status} />
                     </td>
                   </tr>
