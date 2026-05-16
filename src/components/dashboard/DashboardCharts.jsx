@@ -91,46 +91,48 @@ export function DashboardCharts({
   return (
     <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]">
       {/* Volume Over Time - Line Chart */}
-      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md">
+      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0">
         <div className="mb-6">
           <p className="text-sm font-semibold text-slate-900">Volume over time</p>
           <p className="text-xs text-slate-500">
             Settlement activity by day across the fetched transaction set.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={260}>
-          <LineChart data={volumeTimeline} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-            <XAxis 
-              dataKey="day" 
-              stroke="#94a3b8" 
-              tickLine={false} 
-              axisLine={false}
-              tick={{ fontSize: 11 }}
-              dy={5}
-            />
-            <YAxis 
-              stroke="#94a3b8" 
-              tickLine={false} 
-              axisLine={false}
-              tick={{ fontSize: 11 }}
-              tickFormatter={(value) => `$${value.toLocaleString()}`}
-              dx={-5}
-            />
-            <Tooltip content={<CustomTooltip type="line" />} />
-            <Line
-              type="monotone"
-              dataKey="volume"
-              stroke="#1784ff"
-              strokeWidth={3}
-              dot={{ r: 4, fill: "#1784ff", strokeWidth: 2 }}
-              activeDot={{ r: 6, fill: "#1784ff", stroke: "#fff", strokeWidth: 2 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="-mx-2">
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={volumeTimeline} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <XAxis 
+                dataKey="day" 
+                stroke="#94a3b8" 
+                tickLine={false} 
+                axisLine={false}
+                tick={{ fontSize: 11 }}
+                dy={5}
+              />
+              <YAxis 
+                stroke="#94a3b8" 
+                tickLine={false} 
+                axisLine={false}
+                tick={{ fontSize: 11 }}
+                tickFormatter={(value) => `$${value.toLocaleString()}`}
+                dx={-5}
+              />
+              <Tooltip content={<CustomTooltip type="line" />} />
+              <Line
+                type="monotone"
+                dataKey="volume"
+                stroke="#1784ff"
+                strokeWidth={3}
+                dot={{ r: 4, fill: "#1784ff", strokeWidth: 2 }}
+                activeDot={{ r: 6, fill: "#1784ff", stroke: "#fff", strokeWidth: 2 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </SectionCard>
 
       {/* Status Distribution - Donut Chart */}
-      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md">
+      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0">
         <div className="mb-6">
           <p className="text-sm font-semibold text-slate-900">Status distribution</p>
           <p className="text-xs text-slate-500">
@@ -148,12 +150,13 @@ export function DashboardCharts({
               paddingAngle={3}
               stroke="white"
               strokeWidth={2}
+              className="focus:outline-none focus:ring-0"
             >
               {statusBreakdown.map((item, index) => (
                 <Cell 
                   key={item.status} 
                   fill={palette[index % palette.length]}
-                  className="cursor-pointer transition-opacity hover:opacity-80"
+                  className="cursor-pointer transition-opacity hover:opacity-80 focus:outline-none focus:ring-0"
                 />
               ))}
             </Pie>
@@ -183,7 +186,7 @@ export function DashboardCharts({
       </SectionCard>
 
       {/* Currency Mix - Donut Chart with Amount */}
-      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md">
+      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0">
         <div className="mb-6">
           <p className="text-sm font-semibold text-slate-900">Currency mix</p>
           <p className="text-xs text-slate-500">
@@ -201,12 +204,13 @@ export function DashboardCharts({
               paddingAngle={3}
               stroke="white"
               strokeWidth={2}
+              className="focus:outline-none focus:ring-0"
             >
               {currencyBreakdown.map((item, index) => (
                 <Cell 
                   key={item.currency} 
                   fill={palette[index % palette.length]}
-                  className="cursor-pointer transition-opacity hover:opacity-80"
+                  className="cursor-pointer transition-opacity hover:opacity-80 focus:outline-none focus:ring-0"
                 />
               ))}
             </Pie>
