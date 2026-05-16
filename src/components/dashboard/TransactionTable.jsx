@@ -81,6 +81,45 @@ function TableSkeletonRow({ rowIndex }) {
   );
 }
 
+function MobileTransactionCard({ transaction }) {
+  return (
+    <div className="rounded-[24px] border border-slate-100 bg-slate-50/80 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Order ID</p>
+          <p className="mt-2 break-all text-sm font-semibold text-slate-950">
+            {transaction.orderId}
+          </p>
+        </div>
+        <StatusBadge status={transaction.status} />
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Card</p>
+          <p className="mt-1 text-sm text-slate-600">{transaction.maskedCardNumber}</p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Amount</p>
+          <p className="mt-1 text-sm font-semibold text-slate-900">
+            {formatCurrency(transaction.amount, transaction.currency)}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Email</p>
+          <p className="mt-1 break-all text-sm text-slate-600">{transaction.email}</p>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Expiry</p>
+          <p className="mt-1 text-sm text-slate-600">
+            {transaction.expiryMonth} / {transaction.expiryYear}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function TransactionTable({
   transactions,
   currentPage,
@@ -90,7 +129,7 @@ export function TransactionTable({
 }) {
   return (
     <SectionCard className="overflow-hidden p-0">
-      <div className="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 border-b border-slate-100 px-5 py-5 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-slate-950">Transaction history</h2>
           <p className="text-sm text-slate-500">
@@ -120,7 +159,15 @@ export function TransactionTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      {!isLoading ? (
+        <div className="space-y-4 px-5 py-5 md:hidden">
+          {transactions.map((transaction) => (
+            <MobileTransactionCard key={transaction.id} transaction={transaction} />
+          ))}
+        </div>
+      ) : null}
+
+      <div className="hidden overflow-x-auto md:block">
         <table className="min-w-[760px] w-full divide-y divide-slate-100">
           <thead className="bg-slate-50">
             <tr className="text-left text-xs uppercase tracking-[0.22em] text-slate-400">

@@ -10,14 +10,25 @@ import { formatCurrencyLedger } from "../../utils/currencyFormat";
 
 function DashboardAside() {
   return (
-    <SectionCard className="h-fit space-y-4">
-      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
-        Visibility goals
-      </p>
+    <SectionCard className="h-fit space-y-5 lg:sticky lg:top-6">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+          Visibility goals
+        </p>
+        <h2 className="mt-3 text-2xl font-semibold text-slate-950">
+          Make the data readable in seconds
+        </h2>
+      </div>
       <div className="space-y-3 text-sm leading-7 text-slate-500">
-        <p>Watch settlement quality without exposing raw card data anywhere in the UI.</p>
-        <p>Track failed and pending traffic together so support teams catch risky payment states quickly.</p>
-        <p>Use the dashboard as the fallback source of truth when the redirect callback remains incomplete.</p>
+        <div className="rounded-[22px] border border-slate-100 bg-slate-50 p-4">
+          Watch settlement quality without exposing raw card data anywhere in the UI.
+        </div>
+        <div className="rounded-[22px] border border-amber-100 bg-amber-50/70 p-4 text-amber-800">
+          Track failed and pending traffic together so support teams catch risky payment states quickly.
+        </div>
+        <div className="rounded-[22px] border border-brand-100 bg-brand-50/70 p-4">
+          Use the dashboard as the fallback source of truth when the redirect callback remains incomplete.
+        </div>
       </div>
     </SectionCard>
   );
