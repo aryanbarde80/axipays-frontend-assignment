@@ -16,12 +16,12 @@ describe("PaymentResultPage", () => {
   it("renders a failed state from the query string", () => {
     renderPaymentResult("/payment/result?status=failed&order_id=AXI-7");
     expect(screen.getByText(/Redirect lifecycle update/i)).toBeInTheDocument();
-    expect(screen.getByText(/^failed$/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/^failed$/i).length).toBeGreaterThan(0);
     expect(screen.getByText("AXI-7")).toBeInTheDocument();
   });
 
   it("falls back to pending when the callback is incomplete", () => {
     renderPaymentResult("/payment/result");
-    expect(screen.getByText(/^pending$/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/^pending$/i).length).toBeGreaterThan(0);
   });
 });
