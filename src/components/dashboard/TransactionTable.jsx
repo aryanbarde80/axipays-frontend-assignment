@@ -81,7 +81,7 @@ function TableSkeletonRow({ rowIndex }) {
   );
 }
 
-// 🔧 ONLY EMAIL FIX: dummy email generator
+// Generate a dummy email when original email is invalid or missing
 function getDummyEmail(orderId) {
   const domains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com"];
   const names = ["user", "customer", "client", "buyer"];
@@ -97,7 +97,7 @@ export function TransactionTable({
   onPageChange,
   isLoading = false
 }) {
-  // 🔧 ONLY EMAIL FIX: unknown email ko dummy se replace karo
+  // Replace invalid or unknown emails with dummy emails
   const processedTransactions = transactions.map((transaction) => {
     const isInvalidEmail =
       !transaction.email ||
@@ -112,6 +112,7 @@ export function TransactionTable({
 
   return (
     <SectionCard className="overflow-hidden p-0">
+      {/* Table Header with Title and Pagination Controls */}
       <div className="flex flex-col gap-3 border-b border-slate-100 px-6 py-5 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-slate-950">Transaction history</h2>
@@ -142,8 +143,9 @@ export function TransactionTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-[760px] w-full divide-y divide-slate-100">
+      {/* Transaction Table - Auto width, no horizontal scroll */}
+      <div className="w-full">
+        <table className="w-full table-auto divide-y divide-slate-100">
           <thead className="bg-slate-50">
             <tr className="text-left text-xs uppercase tracking-[0.22em] text-slate-400">
               {tableColumns.map((column) => (
@@ -158,10 +160,12 @@ export function TransactionTable({
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
             {isLoading
-              ? Array.from({ length: 5 }, (_, index) => (
+              ? // Show skeleton loading state while fetching data
+                Array.from({ length: 5 }, (_, index) => (
                   <TableSkeletonRow key={`skeleton-row-${index + 1}`} rowIndex={index} />
                 ))
-              : processedTransactions.map((transaction) => (
+              : // Render actual transaction data
+                processedTransactions.map((transaction) => (
                   <tr key={transaction.id} className="text-sm text-slate-600">
                     <td className="whitespace-nowrap px-6 py-5 font-medium text-slate-950">
                       {transaction.orderId}
@@ -169,7 +173,9 @@ export function TransactionTable({
                     <td className="whitespace-nowrap px-6 py-5">
                       {transaction.maskedCardNumber}
                     </td>
-                    <td className="hidden px-6 py-5 lg:table-cell">{transaction.email}</td>
+                    <td className="hidden px-6 py-5 lg:table-cell">
+                      {transaction.email}
+                    </td>
                     <td className="hidden whitespace-nowrap px-6 py-5 md:table-cell">
                       {transaction.expiryMonth} / {transaction.expiryYear}
                     </td>
