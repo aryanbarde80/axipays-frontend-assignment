@@ -2,7 +2,6 @@ import {
   Cell,
   Line,
   LineChart,
-  CartesianGrid,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -15,57 +14,6 @@ import { SectionCard } from "../common/SectionCard";
 import { Skeleton } from "../common/Skeleton";
 
 const palette = buildChartPalette();
-
-function ChartTooltip({ active, payload, label, formatter }) {
-  if (!active || !payload?.length) {
-    return null;
-  }
-
-  return (
-    <div className="rounded-[20px] border border-white/80 bg-white/95 p-3 shadow-[0_16px_40px_rgba(15,23,42,0.12)]">
-      {label ? <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{label}</p> : null}
-      <div className="mt-2 space-y-2">
-        {payload.map((item) => (
-          <div key={item.name} className="flex items-center justify-between gap-4 text-sm">
-            <span className="flex items-center gap-2 text-slate-500">
-              <span
-                className="h-2.5 w-2.5 rounded-full"
-                style={{ backgroundColor: item.color || item.payload?.fill }}
-              />
-              {formatter ? formatter(item.name) : item.name}
-            </span>
-            <span className="font-semibold text-slate-950">{item.value}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ChartLegend({ items, labelKey, valueKey, valuePrefix = "" }) {
-  return (
-    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-      {items.map((item, index) => (
-        <div
-          key={item[labelKey]}
-          className="flex items-center justify-between rounded-[20px] border border-slate-100 bg-slate-50/90 px-4 py-3"
-        >
-          <div className="flex items-center gap-3">
-            <span
-              className="h-3 w-3 rounded-full"
-              style={{ backgroundColor: palette[index % palette.length] }}
-            />
-            <span className="text-sm font-medium text-slate-700">{item[labelKey]}</span>
-          </div>
-          <span className="text-sm font-semibold text-slate-950">
-            {valuePrefix}
-            {item[valueKey]}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function ChartSkeleton({ title, description }) {
   return (
@@ -118,28 +66,18 @@ export function DashboardCharts({
         </div>
         <ResponsiveContainer width="100%" height={280}>
           <LineChart data={volumeTimeline}>
-            <CartesianGrid vertical={false} stroke="#e2e8f0" strokeDasharray="4 6" />
             <XAxis dataKey="day" stroke="#7c8798" tickLine={false} axisLine={false} />
             <YAxis stroke="#7c8798" tickLine={false} axisLine={false} />
-            <Tooltip content={<ChartTooltip />} />
+            <Tooltip />
             <Line
               type="monotone"
               dataKey="volume"
               stroke="#1784ff"
               strokeWidth={3}
-              dot={{ r: 4, strokeWidth: 2, fill: "#ffffff" }}
-              activeDot={{ r: 6 }}
+              dot={{ r: 4 }}
             />
           </LineChart>
         </ResponsiveContainer>
-        <div className="mt-4 rounded-[22px] border border-brand-100 bg-brand-50/70 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700">
-            Reading tip
-          </p>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            Use this line to quickly spot whether volume is clustering into a few days or spreading evenly across the fetched transaction activity.
-          </p>
-        </div>
       </SectionCard>
 
       <SectionCard className="min-h-[360px]">
@@ -163,23 +101,9 @@ export function DashboardCharts({
                 <Cell key={item.status} fill={palette[index % palette.length]} />
               ))}
             </Pie>
-            <Tooltip
-              content={
-                <ChartTooltip
-                  formatter={(name) => getStatusLabel(name)}
-                />
-              }
-            />
+            <Tooltip formatter={(value, name) => [value, getStatusLabel(name)]} />
           </PieChart>
         </ResponsiveContainer>
-        <ChartLegend
-          items={statusBreakdown.map((item) => ({
-            ...item,
-            status: getStatusLabel(item.status)
-          }))}
-          labelKey="status"
-          valueKey="count"
-        />
       </SectionCard>
 
       <SectionCard className="min-h-[360px]">
@@ -203,10 +127,9 @@ export function DashboardCharts({
                 <Cell key={item.currency} fill={palette[index % palette.length]} />
               ))}
             </Pie>
-            <Tooltip content={<ChartTooltip />} />
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-        <ChartLegend items={currencyBreakdown} labelKey="currency" valueKey="amount" />
       </SectionCard>
     </div>
   );
