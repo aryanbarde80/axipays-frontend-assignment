@@ -8,7 +8,9 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Legend
+  Legend,
+  Area,
+  ComposedChart
 } from "recharts";
 import { buildChartPalette, getStatusLabel } from "../../utils/chartMappers";
 import { SectionCard } from "../common/SectionCard";
@@ -20,11 +22,11 @@ const palette = buildChartPalette();
 const CustomTooltip = ({ active, payload, label, type }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-lg">
+      <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-lg sm:px-4 sm:py-3">
         {type === "line" && (
           <>
             <p className="text-xs font-medium text-slate-500">{label}</p>
-            <p className="text-lg font-semibold text-slate-900">
+            <p className="text-base font-semibold text-slate-900 sm:text-lg">
               ${payload[0].value.toLocaleString()}
             </p>
           </>
@@ -34,7 +36,7 @@ const CustomTooltip = ({ active, payload, label, type }) => {
             <p className="text-sm font-medium text-slate-900">
               {payload[0].name}
             </p>
-            <p className="text-lg font-semibold text-slate-900">
+            <p className="text-base font-semibold text-slate-900 sm:text-lg">
               {payload[0].value.toLocaleString()}
             </p>
           </>
@@ -47,13 +49,13 @@ const CustomTooltip = ({ active, payload, label, type }) => {
 
 function ChartSkeleton({ title, description }) {
   return (
-    <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md sm:min-h-[360px]">
-      <div className="mb-6">
-        <Skeleton className="mb-2 h-5 w-32" />
-        <Skeleton className="h-4 w-full max-w-[280px]" />
+    <SectionCard className="min-h-[300px] transition-all duration-200 sm:min-h-[340px]">
+      <div className="mb-4 sm:mb-6">
+        <Skeleton className="mb-1 h-5 w-28 sm:mb-2 sm:w-32" />
+        <Skeleton className="h-3 w-full max-w-[250px] sm:h-4 sm:max-w-[280px]" />
       </div>
-      <div className="space-y-4">
-        <Skeleton className="h-56 w-full rounded-[28px] sm:h-64" />
+      <div className="space-y-3 sm:space-y-4">
+        <Skeleton className="h-48 w-full rounded-xl sm:h-56 sm:rounded-2xl" />
       </div>
     </SectionCard>
   );
@@ -67,7 +69,7 @@ export function DashboardCharts({
 }) {
   if (isLoading) {
     return (
-      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]">
+      <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]">
         <ChartSkeleton
           title="Volume over time"
           description="Settlement activity by day across the fetched transaction set."
@@ -89,65 +91,83 @@ export function DashboardCharts({
   const totalCount = statusBreakdown.reduce((sum, item) => sum + item.count, 0);
 
   return (
-    <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]">
-      {/* Volume Over Time - Line Chart */}
-      <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[360px]">
-        <div className="mb-6">
-          <p className="text-sm font-semibold text-slate-900">Volume over time</p>
-          <p className="text-xs text-slate-500">
-            Settlement activity by day across the fetched transaction set.
-          </p>
+    <div className="grid gap-5 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]">
+      {/* Volume Over Time - Line Chart with Area */}
+      <SectionCard className="min-h-[300px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[340px]">
+        <div className="mb-4 sm:mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Volume over time</p>
+              <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
+                Settlement activity by day across the fetched transaction set.
+              </p>
+            </div>
+            <div className="hidden sm:block h-8 w-8 rounded-full bg-blue-50" />
+          </div>
         </div>
-        <div className="-mx-2">
-          <ResponsiveContainer width="100%" height={230}>
-            <LineChart data={volumeTimeline} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <XAxis 
-                dataKey="day" 
-                stroke="#94a3b8" 
-                tickLine={false} 
-                axisLine={false}
-                tick={{ fontSize: 11 }}
-                dy={5}
-              />
-              <YAxis 
-                stroke="#94a3b8" 
-                tickLine={false} 
-                axisLine={false}
-                tick={{ fontSize: 11 }}
-                tickFormatter={(value) => `$${value.toLocaleString()}`}
-                dx={-5}
-              />
-              <Tooltip content={<CustomTooltip type="line" />} />
-              <Line
-                type="monotone"
-                dataKey="volume"
-                stroke="#1784ff"
-                strokeWidth={3}
-                dot={{ r: 4, fill: "#1784ff", strokeWidth: 2 }}
-                activeDot={{ r: 6, fill: "#1784ff", stroke: "#fff", strokeWidth: 2 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <ResponsiveContainer width="100%" height={220}>
+          <ComposedChart data={volumeTimeline} margin={{ top: 10, right: 5, left: -10, bottom: 0 }}>
+            <defs>
+              <linearGradient id="volumeGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#1784ff" stopOpacity={0.15}/>
+                <stop offset="95%" stopColor="#1784ff" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <XAxis 
+              dataKey="day" 
+              stroke="#94a3b8" 
+              tickLine={false} 
+              axisLine={false}
+              tick={{ fontSize: 10 }}
+              dy={5}
+              interval="preserveStartEnd"
+            />
+            <YAxis 
+              stroke="#94a3b8" 
+              tickLine={false} 
+              axisLine={false}
+              tick={{ fontSize: 10 }}
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+              dx={-5}
+              width={40}
+            />
+            <Tooltip content={<CustomTooltip type="line" />} />
+            <Area
+              type="monotone"
+              dataKey="volume"
+              stroke="#1784ff"
+              strokeWidth={2}
+              fill="url(#volumeGradient)"
+            />
+            <Line
+              type="monotone"
+              dataKey="volume"
+              stroke="#1784ff"
+              strokeWidth={2}
+              dot={{ r: 3, fill: "#1784ff", strokeWidth: 1.5 }}
+              activeDot={{ r: 5, fill: "#1784ff", stroke: "#fff", strokeWidth: 2 }}
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
       </SectionCard>
 
       {/* Status Distribution - Donut Chart */}
-      <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[360px]">
-        <div className="mb-6">
+      <SectionCard className="min-h-[300px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[340px]">
+        <div className="mb-4 sm:mb-6">
           <p className="text-sm font-semibold text-slate-900">Status distribution</p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
             Clear settlement health across success, pending, and failed payments.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={230}>
+        <ResponsiveContainer width="100%" height={220}>
           <PieChart>
             <Pie
               data={statusBreakdown}
               dataKey="count"
               nameKey="status"
-              innerRadius={44}
-              outerRadius={72}
-              paddingAngle={3}
+              innerRadius={45}
+              outerRadius={70}
+              paddingAngle={2}
               stroke="white"
               strokeWidth={2}
               className="focus:outline-none focus:ring-0"
@@ -164,18 +184,19 @@ export function DashboardCharts({
               content={<CustomTooltip type="pie" />}
               formatter={(value, name) => {
                 const percentage = ((value / totalCount) * 100).toFixed(1);
-                return [`${value} (${percentage}%)`, getStatusLabel(name)];
+                return [`${value.toLocaleString()} (${percentage}%)`, getStatusLabel(name)];
               }}
             />
             <Legend 
               verticalAlign="bottom" 
-              height={52}
+              height={46}
+              iconSize={8}
               formatter={(value) => {
                 const item = statusBreakdown.find(i => i.status === value);
                 const percentage = item ? ((item.count / totalCount) * 100).toFixed(1) : 0;
                 return (
-                  <span className="text-xs text-slate-600">
-                    {getStatusLabel(value)} ({percentage}%)
+                  <span className="text-[11px] text-slate-600 sm:text-xs">
+                    {getStatusLabel(value)} {percentage}%
                   </span>
                 );
               }}
@@ -186,22 +207,22 @@ export function DashboardCharts({
       </SectionCard>
 
       {/* Currency Mix - Donut Chart with Amount */}
-      <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[360px]">
-        <div className="mb-6">
+      <SectionCard className="min-h-[300px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[340px]">
+        <div className="mb-4 sm:mb-6">
           <p className="text-sm font-semibold text-slate-900">Currency mix</p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
             Amount concentration by currency across the current data set.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={230}>
+        <ResponsiveContainer width="100%" height={220}>
           <PieChart>
             <Pie
               data={currencyBreakdown}
               dataKey="amount"
               nameKey="currency"
-              innerRadius={44}
-              outerRadius={72}
-              paddingAngle={3}
+              innerRadius={45}
+              outerRadius={70}
+              paddingAngle={2}
               stroke="white"
               strokeWidth={2}
               className="focus:outline-none focus:ring-0"
@@ -218,18 +239,19 @@ export function DashboardCharts({
               content={<CustomTooltip type="pie" />}
               formatter={(value, name) => {
                 const percentage = ((value / totalAmount) * 100).toFixed(1);
-                return [`$${value.toLocaleString()} (${percentage}%)`, name];
+                return [`${value.toLocaleString()} (${percentage}%)`, name];
               }}
             />
             <Legend 
               verticalAlign="bottom" 
-              height={52}
+              height={46}
+              iconSize={8}
               formatter={(value) => {
                 const item = currencyBreakdown.find(i => i.currency === value);
                 const percentage = item ? ((item.amount / totalAmount) * 100).toFixed(1) : 0;
                 return (
-                  <span className="text-xs text-slate-600">
-                    {value} ({percentage}%)
+                  <span className="text-[11px] text-slate-600 sm:text-xs">
+                    {value} {percentage}%
                   </span>
                 );
               }}
