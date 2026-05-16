@@ -83,41 +83,69 @@ function TableSkeletonRow({ rowIndex }) {
 
 function MobileTransactionCard({ transaction }) {
   return (
-    <div className="rounded-[20px] border border-slate-100 bg-slate-50/80 p-4">
-      <div className="flex flex-col gap-3 min-[360px]:flex-row min-[360px]:items-start min-[360px]:justify-between">
+    <div className="overflow-hidden rounded-[20px] border border-slate-100 bg-white shadow-sm">
+      <div className="flex items-start justify-between gap-3 border-b border-slate-100 bg-slate-50/80 px-4 py-3">
         <div className="min-w-0">
-          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Order ID</p>
-          <p className="mt-2 break-all text-sm font-semibold text-slate-950">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+            Order ID
+          </p>
+          <p className="mt-1 break-all text-sm font-semibold leading-5 text-slate-950">
             {transaction.orderId}
           </p>
         </div>
-        <div className="w-fit">
+        <div className="shrink-0">
           <StatusBadge status={transaction.status} />
         </div>
       </div>
 
-      <div className="mt-4 space-y-3 text-sm text-slate-600">
-        <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Card</p>
-          <p className="mt-1 break-all">{transaction.maskedCardNumber}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Email</p>
-          <p className="mt-1 break-all text-slate-900">{transaction.email}</p>
-          <p className="mt-1 text-xs text-slate-400">{transaction.contactHint}</p>
-        </div>
-        <div className="grid gap-3 min-[360px]:grid-cols-2">
-          <div className="min-w-0">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Expiry</p>
-            <p className="mt-1">
-              {transaction.expiryMonth} / {transaction.expiryYear}
+      <div className="px-4 py-4">
+        <div className="space-y-3 text-sm">
+          <div className="rounded-2xl bg-slate-50 px-3 py-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Card Number
+            </p>
+            <p className="mt-1 break-all font-medium leading-5 text-slate-900">
+              {transaction.maskedCardNumber}
             </p>
           </div>
-          <div className="min-w-0">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Amount</p>
-            <p className="mt-1 break-words font-semibold text-slate-900">
-              {formatCurrency(transaction.amount, transaction.currency)}
+
+          <div className="rounded-2xl bg-slate-50 px-3 py-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Contact
             </p>
+            <p className="mt-1 break-all font-medium leading-5 text-slate-900">
+              {transaction.email}
+            </p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">{transaction.contactHint}</p>
+          </div>
+
+          <div className="grid gap-2">
+            <div className="flex items-start justify-between gap-3 rounded-2xl bg-slate-50 px-3 py-3">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                Expiry
+              </span>
+              <span className="text-right font-medium leading-5 text-slate-900">
+                {transaction.expiryMonth} / {transaction.expiryYear}
+              </span>
+            </div>
+
+            <div className="flex items-start justify-between gap-3 rounded-2xl bg-slate-50 px-3 py-3">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                Currency
+              </span>
+              <span className="text-right font-medium leading-5 text-slate-900">
+                {transaction.currency}
+              </span>
+            </div>
+
+            <div className="flex items-start justify-between gap-3 rounded-2xl bg-slate-950 px-3 py-3 text-white">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/60">
+                Amount
+              </span>
+              <span className="font-semibold leading-5 text-right">
+                {formatCurrency(transaction.amount, transaction.currency)}
+              </span>
+            </div>
           </div>
         </div>
       </div>
