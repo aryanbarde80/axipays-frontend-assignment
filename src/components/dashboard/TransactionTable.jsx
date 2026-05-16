@@ -45,8 +45,8 @@ const tableColumns = [
   {
     key: "status",
     label: "Status",
-    headerClassName: "",
-    cellClassName: ""
+    headerClassName: "w-[100px] min-w-[100px]",
+    cellClassName: "w-[100px] min-w-[100px]"
   }
 ];
 
@@ -143,9 +143,9 @@ export function TransactionTable({
         </div>
       </div>
 
-      {/* Transaction Table - Auto width, no horizontal scroll */}
-      <div className="w-full">
-        <table className="w-full table-auto divide-y divide-slate-100">
+      {/* Transaction Table - Fixed width for status column, no horizontal scroll */}
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-[760px] w-full table-auto divide-y divide-slate-100">
           <thead className="bg-slate-50">
             <tr className="text-left text-xs uppercase tracking-[0.22em] text-slate-400">
               {tableColumns.map((column) => (
