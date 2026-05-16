@@ -10,14 +10,16 @@ export function formatCurrency(amount = 0, currency = "USD") {
   }
 }
 
-export function formatCurrencyLedger(currencyTotals = {}) {
+export function formatCurrencyLedgerEntries(currencyTotals = {}) {
   const entries = Object.entries(currencyTotals);
 
   if (entries.length === 0) {
-    return formatCurrency(0, "USD");
+    return [formatCurrency(0, "USD")];
   }
 
-  return entries
-    .map(([currency, amount]) => formatCurrency(amount, currency))
-    .join(" · ");
+  return entries.map(([currency, amount]) => formatCurrency(amount, currency));
+}
+
+export function formatCurrencyLedger(currencyTotals = {}) {
+  return formatCurrencyLedgerEntries(currencyTotals).join(" · ");
 }

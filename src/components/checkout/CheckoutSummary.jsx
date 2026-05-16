@@ -27,14 +27,14 @@ export function CheckoutSummary({ preview }) {
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
           Payment summary
         </p>
-        <div className="flex items-end justify-between gap-4">
-          <div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
             <p className="text-sm text-slate-500">Secure payable amount</p>
-            <h2 className="mt-2 text-4xl font-semibold text-slate-950">
+            <h2 className="mt-2 break-words text-3xl font-semibold leading-tight text-slate-950 sm:text-4xl">
               {formatCurrency(preview.amount, preview.currency)}
             </h2>
           </div>
-          <span className="rounded-full bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-700">
+          <span className="w-fit rounded-full bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-700">
             {preview.paymentMode === "browser" ? "Live redirect" : "Embedded preview"}
           </span>
         </div>
@@ -42,11 +42,11 @@ export function CheckoutSummary({ preview }) {
 
       <div className="rounded-[28px] border border-slate-100 bg-slate-950 p-6 text-white">
         <p className="text-sm text-white/70">Billing contact</p>
-        <p className="mt-2 text-lg font-semibold">
+        <p className="mt-2 break-all text-base font-semibold sm:text-lg">
           {preview.email || "name@example.com"}
         </p>
         <div className="mt-6 h-px bg-white/10" />
-        <div className="mt-6 flex items-center justify-between text-sm text-white/70">
+        <div className="mt-6 flex flex-col gap-2 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
           <span>Gateway mode</span>
           <span className="font-medium text-white">
             {preview.paymentMode === "browser" ? "Redirect" : "Iframe"}
@@ -58,12 +58,12 @@ export function CheckoutSummary({ preview }) {
         {trustPoints.map((point) => {
           const Icon = point.icon;
           return (
-            <div key={point.title} className="flex items-start gap-4">
+            <div key={point.title} className="flex items-start gap-3 sm:gap-4">
               <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
                 <Icon />
               </div>
-              <div>
-                <p className="font-medium text-slate-900">{point.title}</p>
+              <div className="min-w-0">
+                <p className="break-words font-medium text-slate-900">{point.title}</p>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
                   {point.description}
                 </p>

@@ -13,6 +13,7 @@ export function CheckoutPage() {
       title="A checkout experience that feels trustworthy, fast, and production ready."
       description="Axipays Console simulates a payment gateway front end with strong validation, signed request headers, redirect handling, and a calm fintech visual language."
       aside={<CheckoutSummary preview={checkout.paymentPreview} />}
+      contentStartsUnderHero
     >
       <CheckoutForm
         formValues={checkout.formValues}

@@ -3,6 +3,16 @@ import { MemoryRouter } from "react-router-dom";
 import { useCheckout } from "./useCheckout";
 import * as paymentService from "../services/payment.service";
 
+const mockNavigate = vi.fn();
+
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate
+  };
+});
+
 vi.mock("../services/payment.service", () => ({
   initiatePayment: vi.fn()
 }));
@@ -61,10 +71,9 @@ describe("useCheckout", () => {
     });
 
     expect(paymentService.initiatePayment).toHaveBeenCalledTimes(1);
-    expect(window.open).toHaveBeenCalledWith(
-      "https://payment-assignment.onrender.com/redirect",
-      "_blank",
-      "noopener,noreferrer"
+    expect(window.open).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith(
+      "/payment/result?redirect_url=https%3A%2F%2Fpayment-assignment.onrender.com%2Fredirect"
     );
   });
 });

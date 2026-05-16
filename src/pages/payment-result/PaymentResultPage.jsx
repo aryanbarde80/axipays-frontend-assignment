@@ -25,10 +25,10 @@ export function PaymentResultPage() {
             Latest attempt
           </p>
           <div className="space-y-2 text-sm text-slate-500">
-            <p>Order ID: {paymentResult.orderId}</p>
-            <p>Reference: {paymentResult.reference}</p>
+            <p className="break-all">Order ID: {paymentResult.orderId}</p>
+            <p className="break-all">Reference: {paymentResult.reference}</p>
             {paymentResult.paymentAttempt ? (
-              <p>
+              <p className="break-words">
                 Amount:{" "}
                 {formatCurrency(
                   paymentResult.paymentAttempt.amount,
@@ -46,41 +46,45 @@ export function PaymentResultPage() {
         className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]"
       >
         <SectionCard className="space-y-5">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
                 Final status
               </p>
-              <h2 className="mt-3 text-3xl font-semibold text-slate-950">
+              <h2 className="mt-3 break-words text-2xl font-semibold text-slate-950 sm:text-3xl">
                 Redirect lifecycle update
               </h2>
             </div>
             <StatusBadge status={paymentResult.status} />
           </div>
 
-          <p className="text-base leading-7 text-slate-600">{paymentResult.message}</p>
+          <p className="break-words text-sm leading-7 text-slate-600 sm:text-base">
+            {paymentResult.message}
+          </p>
 
           <div className="grid gap-4 rounded-[28px] border border-slate-100 bg-slate-50 p-5 md:grid-cols-2">
             <div>
               <p className="text-sm text-slate-400">Order ID</p>
-              <p className="mt-2 text-lg font-semibold text-slate-950">
+              <p className="mt-2 break-all text-lg font-semibold text-slate-950">
                 {paymentResult.orderId}
               </p>
             </div>
             <div>
               <p className="text-sm text-slate-400">Reference</p>
-              <p className="mt-2 text-lg font-semibold text-slate-950">
+              <p className="mt-2 break-all text-lg font-semibold text-slate-950">
                 {paymentResult.reference}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link to="/dashboard">
-              <Button type="button">Open dashboard</Button>
+              <Button type="button" className="w-full sm:w-auto">
+                Open dashboard
+              </Button>
             </Link>
             <Link to="/">
-              <Button type="button" variant="secondary">
+              <Button type="button" variant="secondary" className="w-full sm:w-auto">
                 Start another payment
               </Button>
             </Link>

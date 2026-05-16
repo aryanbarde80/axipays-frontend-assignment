@@ -6,7 +6,7 @@ import { DashboardCharts } from "../../components/dashboard/DashboardCharts";
 import { SummaryCard } from "../../components/dashboard/SummaryCard";
 import { TransactionTable } from "../../components/dashboard/TransactionTable";
 import { useTransactions } from "../../hooks/useTransactions";
-import { formatCurrencyLedger } from "../../utils/currencyFormat";
+import { formatCurrencyLedgerEntries } from "../../utils/currencyFormat";
 
 function DashboardAside() {
   return (
@@ -74,7 +74,7 @@ export function DashboardPage() {
             />
             <SummaryCard
               label="Total success volume"
-              value={formatCurrencyLedger(metrics.totalSuccessVolume)}
+              value={formatCurrencyLedgerEntries(metrics.totalSuccessVolume)}
               hint="Successful payments grouped by currency when the data set is mixed."
             />
             <SummaryCard

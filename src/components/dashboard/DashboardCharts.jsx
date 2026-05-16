@@ -17,7 +17,7 @@ const palette = buildChartPalette();
 
 function ChartSkeleton({ title, description }) {
   return (
-    <SectionCard className="min-h-[360px]">
+    <SectionCard className="min-h-[320px]">
       <div className="mb-6">
         <p className="text-sm font-medium text-slate-900">{title}</p>
         <p className="text-sm text-slate-500">{description}</p>
@@ -57,14 +57,14 @@ export function DashboardCharts({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr_1fr]">
-      <SectionCard className="min-h-[360px]">
+      <SectionCard className="min-h-[320px]">
         <div className="mb-6">
           <p className="text-sm font-medium text-slate-900">Volume over time</p>
           <p className="text-sm text-slate-500">
             Settlement activity by day across the fetched transaction set.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={280}>
+        <ResponsiveContainer width="100%" height={240}>
           <LineChart data={volumeTimeline}>
             <XAxis dataKey="day" stroke="#7c8798" tickLine={false} axisLine={false} />
             <YAxis stroke="#7c8798" tickLine={false} axisLine={false} />
@@ -80,21 +80,21 @@ export function DashboardCharts({
         </ResponsiveContainer>
       </SectionCard>
 
-      <SectionCard className="min-h-[360px]">
+      <SectionCard className="min-h-[320px]">
         <div className="mb-6">
           <p className="text-sm font-medium text-slate-900">Status distribution</p>
           <p className="text-sm text-slate-500">
             Clear settlement health across success, pending, and failed payments.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={280}>
+        <ResponsiveContainer width="100%" height={240}>
           <PieChart>
             <Pie
               data={statusBreakdown}
               dataKey="count"
               nameKey="status"
-              innerRadius={68}
-              outerRadius={104}
+              innerRadius={50}
+              outerRadius={82}
               paddingAngle={4}
             >
               {statusBreakdown.map((item, index) => (
@@ -106,21 +106,21 @@ export function DashboardCharts({
         </ResponsiveContainer>
       </SectionCard>
 
-      <SectionCard className="min-h-[360px]">
+      <SectionCard className="min-h-[320px]">
         <div className="mb-6">
           <p className="text-sm font-medium text-slate-900">Currency mix</p>
           <p className="text-sm text-slate-500">
             Amount concentration by currency across the current data set.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={280}>
+        <ResponsiveContainer width="100%" height={240}>
           <PieChart>
             <Pie
               data={currencyBreakdown}
               dataKey="amount"
               nameKey="currency"
-              innerRadius={68}
-              outerRadius={104}
+              innerRadius={50}
+              outerRadius={82}
               paddingAngle={4}
             >
               {currencyBreakdown.map((item, index) => (

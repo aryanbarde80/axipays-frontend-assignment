@@ -140,7 +140,6 @@ export function useCheckout() {
         return;
       }
 
-      window.open(paymentResponse.redirectionUrl, "_blank", "noopener,noreferrer");
       navigate(
         `/payment/result?redirect_url=${encodeURIComponent(paymentResponse.redirectionUrl)}`
       );
