@@ -15,7 +15,7 @@ export function Button({
   return (
     <motion.button
       whileTap={{ scale: 0.985 }}
-      className={`inline-flex min-h-12 items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition duration-200 sm:px-5 ${variantClassName} ${className}`}
+      className={`inline-flex min-h-12 items-center justify-center rounded-2xl px-4 py-3 text-center text-sm font-semibold leading-tight transition duration-200 sm:px-5 ${variantClassName} ${className}`}
       disabled={isLoading || props.disabled}
       {...props}
     >

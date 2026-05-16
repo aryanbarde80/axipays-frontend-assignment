@@ -29,9 +29,9 @@ export function SummaryCard({
   return (
     <SectionCard className="flex h-full flex-col justify-between gap-4 transition-all duration-200 hover:shadow-md">
       <div className="space-y-3">
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-sm font-medium text-slate-500">{label}</p>
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col items-start gap-3 min-[420px]:flex-row min-[420px]:items-start min-[420px]:justify-between">
+          <p className="text-sm font-medium leading-6 text-slate-500">{label}</p>
+          <div className="flex flex-wrap items-center gap-2">
             {accent ? (
               <span className="rounded-full bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                 {accent}
@@ -49,10 +49,10 @@ export function SummaryCard({
           {valueLines.map((line, idx) => (
             <h3
               key={idx}
-              className={`font-semibold tracking-tight text-slate-900 ${
+              className={`font-metric font-semibold tracking-tight text-slate-900 ${
                 valueLines.length > 1
-                  ? "break-words text-2xl leading-tight sm:text-3xl lg:text-[2.8rem]"
-                  : "break-words text-3xl sm:text-4xl"
+                  ? "break-words text-[2rem] leading-[1.02] sm:text-3xl lg:text-[2.8rem]"
+                  : "break-words text-[2.4rem] leading-none sm:text-4xl"
               }`}
             >
               {line}
@@ -62,7 +62,7 @@ export function SummaryCard({
       </div>
 
       <div className="space-y-3">
-        <p className="text-sm leading-7 text-slate-400">{hint}</p>
+        <p className="text-sm leading-6 text-slate-400 sm:leading-7">{hint}</p>
         {trend ? (
           <div className={`flex w-fit items-center gap-1 rounded-full px-2 py-1 ${trendBg}`}>
             <TrendIcon className={`h-3 w-3 ${trendColor}`} />
@@ -72,7 +72,7 @@ export function SummaryCard({
           </div>
         ) : null}
         {footer ? (
-          <div className="rounded-[20px] border border-slate-100 bg-slate-50/90 px-4 py-3 text-sm text-slate-600">
+          <div className="rounded-[20px] border border-slate-100 bg-slate-50/90 px-4 py-3 text-sm leading-6 text-slate-600">
             {footer}
           </div>
         ) : null}

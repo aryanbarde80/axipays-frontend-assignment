@@ -47,13 +47,13 @@ const CustomTooltip = ({ active, payload, label, type }) => {
 
 function ChartSkeleton({ title, description }) {
   return (
-    <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md">
+    <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md sm:min-h-[360px]">
       <div className="mb-6">
         <Skeleton className="mb-2 h-5 w-32" />
         <Skeleton className="h-4 w-full max-w-[280px]" />
       </div>
       <div className="space-y-4">
-        <Skeleton className="h-64 w-full rounded-[28px]" />
+        <Skeleton className="h-56 w-full rounded-[28px] sm:h-64" />
       </div>
     </SectionCard>
   );
@@ -91,7 +91,7 @@ export function DashboardCharts({
   return (
     <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1.2fr_1fr_1fr]">
       {/* Volume Over Time - Line Chart */}
-      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0">
+      <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[360px]">
         <div className="mb-6">
           <p className="text-sm font-semibold text-slate-900">Volume over time</p>
           <p className="text-xs text-slate-500">
@@ -99,7 +99,7 @@ export function DashboardCharts({
           </p>
         </div>
         <div className="-mx-2">
-          <ResponsiveContainer width="100%" height={260}>
+          <ResponsiveContainer width="100%" height={230}>
             <LineChart data={volumeTimeline} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <XAxis 
                 dataKey="day" 
@@ -132,21 +132,21 @@ export function DashboardCharts({
       </SectionCard>
 
       {/* Status Distribution - Donut Chart */}
-      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0">
+      <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[360px]">
         <div className="mb-6">
           <p className="text-sm font-semibold text-slate-900">Status distribution</p>
           <p className="text-xs text-slate-500">
             Clear settlement health across success, pending, and failed payments.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={260}>
+        <ResponsiveContainer width="100%" height={230}>
           <PieChart>
             <Pie
               data={statusBreakdown}
               dataKey="count"
               nameKey="status"
-              innerRadius={55}
-              outerRadius={85}
+              innerRadius={44}
+              outerRadius={72}
               paddingAngle={3}
               stroke="white"
               strokeWidth={2}
@@ -169,7 +169,7 @@ export function DashboardCharts({
             />
             <Legend 
               verticalAlign="bottom" 
-              height={36}
+              height={52}
               formatter={(value) => {
                 const item = statusBreakdown.find(i => i.status === value);
                 const percentage = item ? ((item.count / totalCount) * 100).toFixed(1) : 0;
@@ -186,21 +186,21 @@ export function DashboardCharts({
       </SectionCard>
 
       {/* Currency Mix - Donut Chart with Amount */}
-      <SectionCard className="min-h-[360px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0">
+      <SectionCard className="min-h-[320px] transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-0 sm:min-h-[360px]">
         <div className="mb-6">
           <p className="text-sm font-semibold text-slate-900">Currency mix</p>
           <p className="text-xs text-slate-500">
             Amount concentration by currency across the current data set.
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={260}>
+        <ResponsiveContainer width="100%" height={230}>
           <PieChart>
             <Pie
               data={currencyBreakdown}
               dataKey="amount"
               nameKey="currency"
-              innerRadius={55}
-              outerRadius={85}
+              innerRadius={44}
+              outerRadius={72}
               paddingAngle={3}
               stroke="white"
               strokeWidth={2}
@@ -223,7 +223,7 @@ export function DashboardCharts({
             />
             <Legend 
               verticalAlign="bottom" 
-              height={36}
+              height={52}
               formatter={(value) => {
                 const item = currencyBreakdown.find(i => i.currency === value);
                 const percentage = item ? ((item.amount / totalAmount) * 100).toFixed(1) : 0;

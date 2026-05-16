@@ -19,6 +19,18 @@ body {
   overflow-x: hidden;
 }
 
+.font-metric {
+  font-family:
+    "Satoshi",
+    "Inter",
+    "Segoe UI",
+    "Noto Sans",
+    "Arial Unicode MS",
+    system-ui,
+    sans-serif;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
 * {
   box-sizing: border-box;
 }

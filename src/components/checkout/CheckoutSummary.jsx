@@ -24,7 +24,7 @@ export function CheckoutSummary({ preview }) {
   return (
     <SectionCard className="h-fit space-y-6">
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-start gap-2 min-[380px]:flex-row min-[380px]:items-center min-[380px]:justify-between">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Payment summary
           </p>
@@ -58,7 +58,7 @@ export function CheckoutSummary({ preview }) {
           <p className="break-all text-sm font-medium text-slate-900">
             {preview.email || "customer@example.com"}
           </p>
-          <div className="mt-4 flex items-center justify-between text-sm">
+          <div className="mt-4 flex flex-col gap-3 text-sm min-[380px]:flex-row min-[380px]:items-center min-[380px]:justify-between">
             <div className="flex items-center gap-2">
               <FiGlobe className="h-4 w-4 text-slate-400" />
               <span className="text-slate-500">Gateway mode</span>

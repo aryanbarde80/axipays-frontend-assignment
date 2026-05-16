@@ -55,14 +55,16 @@ export function PaymentResultPage() {
                 Redirect lifecycle update
               </h2>
             </div>
-            <StatusBadge status={paymentResult.status} />
+            <div className="w-fit">
+              <StatusBadge status={paymentResult.status} />
+            </div>
           </div>
 
           <p className="break-words text-sm leading-7 text-slate-600 sm:text-base">
             {paymentResult.message}
           </p>
 
-          <div className="grid gap-4 rounded-[28px] border border-slate-100 bg-slate-50 p-5 md:grid-cols-2">
+          <div className="grid gap-4 rounded-[28px] border border-slate-100 bg-slate-50 p-5 sm:grid-cols-2">
             <div>
               <p className="text-sm text-slate-400">Order ID</p>
               <p className="mt-2 break-all text-lg font-semibold text-slate-950">

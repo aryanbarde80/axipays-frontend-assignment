@@ -43,7 +43,7 @@ export function StatusModal({ modal, onClose }) {
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className={`w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl ${theme.border} border`}
+            className={`relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl ${theme.border} border`}
           >
             {/* Header with gradient bar */}
             <div className={`h-1.5 w-full ${
@@ -51,7 +51,7 @@ export function StatusModal({ modal, onClose }) {
               modal?.status === "pending" ? "bg-orange-500" : "bg-red-500"
             }`} />
 
-            <div className="p-6 sm:p-8">
+            <div className="p-5 sm:p-8">
               {/* Close button */}
               <button
                 onClick={onClose}
@@ -72,7 +72,7 @@ export function StatusModal({ modal, onClose }) {
                 </h3>
 
                 {/* Message */}
-                <p className="mb-6 text-sm text-slate-600">
+                <p className="mb-6 break-words text-sm leading-6 text-slate-600">
                   {modal?.message || "Your transaction has been processed."}
                 </p>
 
